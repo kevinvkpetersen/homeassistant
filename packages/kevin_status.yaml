@@ -1,0 +1,87 @@
+# Update devices around the house to indicate Kevin's work status
+##############################################################
+
+input_select:
+  kevin_status:
+    name: Kevin's work status
+    icon: mdi:traffic-light-outline
+    options:
+      - Free
+      - Busy
+      - Critical
+      - Out
+
+##############################################################
+automation:
+  - id: kevin_status_tag_busy
+    alias: Kevin Status - Busy tag scanned
+    mode: single
+    trigger:
+      - platform: tag
+        tag_id: c7089580-2648-4265-97b1-ab03a53b8fd9
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.kevin_status
+        data:
+          option: Busy
+  ############################################################
+  - id: kevin_status_tag_critical
+    alias: Kevin Status - Critical tag scanned
+    mode: single
+    trigger:
+      - platform: tag
+        tag_id: 125c9116-6961-4f57-9671-1990fbe47d9d
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.kevin_status
+        data:
+          option: Critical
+  ############################################################
+  - id: kevin_status_tag_out
+    alias: Kevin Status - Out tag scanned
+    mode: single
+    trigger:
+      - platform: tag
+        tag_id: 5d4997bd-d778-482e-9a91-b46b297cde17
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.kevin_status
+        data:
+          option: Out
+  ############################################################
+  - id: kevin_status_update_devices
+    alias: Kevin Status - Update devices based on status
+    mode: single
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.kevin_status
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Busy
+            sequence:
+              - service: scene.turn_on
+                target:
+                  entity_id: scene.kevin_status_busy
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Critical
+            sequence:
+              - service: scene.turn_on
+                target:
+                  entity_id: scene.kevin_status_critical
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Out
+            sequence:
+              - service: scene.turn_on
+                target:
+                  entity_id: scene.kevin_status_out
