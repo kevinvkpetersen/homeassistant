@@ -3,7 +3,7 @@
 
 input_select:
   kevin_status:
-    name: Kevin's work status
+    name: Kevin's Work Status
     icon: mdi:traffic-light-outline
     options:
       - Free
@@ -11,49 +11,76 @@ input_select:
       - Critical
       - Out
 
+light:
+  - platform: group
+    name: Kevin Status Lights
+    entities:
+      - light.d20_lamp
+
 ##############################################################
+
 automation:
-  - id: kevin_status_tag_busy
-    alias: Kevin Status - Busy tag scanned
+  - id: kevin_status_update
+    alias: Kevin Status - Update Status
     mode: single
     trigger:
-      - platform: tag
+      - id: tag_busy
+        platform: tag
         tag_id: c7089580-2648-4265-97b1-ab03a53b8fd9
-    action:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.kevin_status
-        data:
-          option: Busy
-  ############################################################
-  - id: kevin_status_tag_critical
-    alias: Kevin Status - Critical tag scanned
-    mode: single
-    trigger:
-      - platform: tag
+      - id: tag_critical
+        platform: tag
         tag_id: 125c9116-6961-4f57-9671-1990fbe47d9d
-    action:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.kevin_status
-        data:
-          option: Critical
-  ############################################################
-  - id: kevin_status_tag_out
-    alias: Kevin Status - Out tag scanned
-    mode: single
-    trigger:
-      - platform: tag
+      - id: tag_out
+        platform: tag
         tag_id: 5d4997bd-d778-482e-9a91-b46b297cde17
+      - id: tag_free
+        platform: tag
+        tag_id: f45c3159-146d-4b83-b613-772197585b9f
     action:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.kevin_status
-        data:
-          option: Out
+      - choose:
+          - conditions:
+              - condition: trigger
+                id:
+                  - tag_busy
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Busy
+          - conditions:
+              - condition: trigger
+                id:
+                  - tag_critical
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Critical
+          - conditions:
+              - condition: trigger
+                id:
+                  - tag_out
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Out
+          - conditions:
+              - condition: trigger
+                id:
+                  - tag_free
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Free
   ############################################################
-  - id: kevin_status_update_devices
-    alias: Kevin Status - Update devices based on status
+  - id: kevin_status_update_lights
+    alias: Kevin Status - Update Lights
     mode: single
     trigger:
       - platform: state
@@ -66,22 +93,42 @@ automation:
                 entity_id: input_select.kevin_status
                 state: Busy
             sequence:
-              - service: scene.turn_on
+              - service: light.turn_on
                 target:
-                  entity_id: scene.kevin_status_busy
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [0, 0, 255]
           - conditions:
               - condition: state
                 entity_id: input_select.kevin_status
                 state: Critical
             sequence:
-              - service: scene.turn_on
+              - service: light.turn_on
                 target:
-                  entity_id: scene.kevin_status_critical
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [255, 0, 0]
           - conditions:
               - condition: state
                 entity_id: input_select.kevin_status
                 state: Out
             sequence:
-              - service: scene.turn_on
+              - service: light.turn_on
                 target:
-                  entity_id: scene.kevin_status_out
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [0, 255, 0]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Free
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [255, 255, 255]
