@@ -1,3 +1,10 @@
+homeassistant:
+  name: !secret home_name
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  time_zone: "America/Vancouver"
+  unit_system: metric
+
 # Loads default set of integrations. Do not remove.
 default_config:
 
@@ -5,10 +12,16 @@ default_config:
 frontend:
   themes: !include_dir_merge_named themes
 
-# Text to speech
-tts:
-  - platform: google_translate
-
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+
+####################  Services  ####################
+# HTTP/SSL
+http:
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+# Text to speech
+tts:
+  - platform: google_translate
