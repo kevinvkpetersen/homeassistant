@@ -10,6 +10,7 @@ input_select:
       - Busy
       - Critical
       - Out
+      - Relax
 
 light:
   - platform: group
@@ -24,11 +25,37 @@ automation:
     alias: Kevin Status - Update Status
     mode: single
     trigger:
+      - id: cube_busy
+        platform: state
+        entity_id:
+          - event.status_cube_1
+      - id: cube_out
+        platform: state
+        entity_id:
+          - event.status_cube_2
+      - id: cube_critical
+        platform: state
+        entity_id:
+          - event.status_cube_3
+      - id: cube_free
+        platform: state
+        entity_id:
+          - event.status_cube_4
+      - id: cube_relax
+        platform: state
+        entity_id:
+          - event.status_cube_5
+      - id: cube_off
+        platform: state
+        entity_id:
+          - event.status_cube_6
+
       - id: light_off
         platform: state
         entity_id:
           - light.d20_lamp
         to: "off"
+
       - id: tag_busy
         platform: tag
         tag_id: c7089580-2648-4265-97b1-ab03a53b8fd9
@@ -46,6 +73,7 @@ automation:
           - conditions:
               - condition: trigger
                 id:
+                  - cube_busy
                   - tag_busy
             sequence:
               - service: input_select.select_option
@@ -56,6 +84,7 @@ automation:
           - conditions:
               - condition: trigger
                 id:
+                  - cube_critical
                   - tag_critical
             sequence:
               - service: input_select.select_option
@@ -66,6 +95,7 @@ automation:
           - conditions:
               - condition: trigger
                 id:
+                  - cube_out
                   - tag_out
             sequence:
               - service: input_select.select_option
@@ -76,6 +106,17 @@ automation:
           - conditions:
               - condition: trigger
                 id:
+                  - cube_relax
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Relax
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_free
                   - tag_free
             sequence:
               - service: light.turn_on
@@ -89,6 +130,7 @@ automation:
           - conditions:
               - condition: trigger
                 id:
+                  - cube_off
                   - light_off
             sequence:
               - service: light.turn_off
@@ -147,6 +189,17 @@ automation:
                 data:
                   brightness: 255
                   rgb_color: [0, 255, 0]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Relax
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [255, 123, 29]
           - conditions:
               - condition: state
                 entity_id: input_select.kevin_status
