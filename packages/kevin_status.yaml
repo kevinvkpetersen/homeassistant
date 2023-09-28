@@ -17,6 +17,10 @@ light:
     name: Kevin Status Lights
     entities:
       - light.d20_lamp
+  - platform: group
+    name: Katie Desk Light
+    entities:
+      - light.adjustable_lamp
 
 ##############################################################
 
@@ -225,3 +229,58 @@ automation:
                 data:
                   brightness: 255
                   rgb_color: [255, 255, 255]
+  ############################################################
+  - id: kevin_status_update_katie_light
+    alias: Kevin Status - Update Katie's Light
+    mode: single
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.kevin_status
+      - platform: state
+        entity_id: light.katie_desk_light
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: light.katie_desk_light
+        state: "on"
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Busy
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.katie_desk_light
+                data:
+                  brightness: 255
+                  rgb_color: [0, 0, 255]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Critical
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.katie_desk_light
+                data:
+                  brightness: 255
+                  rgb_color: [255, 0, 0]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Out
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.katie_desk_light
+                data:
+                  brightness: 255
+                  rgb_color: [0, 255, 0]
+        default:
+          - service: scene.turn_on
+            target:
+              entity_id: scene.katie_office_bright
+  ############################################################
