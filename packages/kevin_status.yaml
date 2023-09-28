@@ -24,6 +24,11 @@ automation:
     alias: Kevin Status - Update Status
     mode: single
     trigger:
+      - id: light_off
+        platform: state
+        entity_id:
+          - light.d20_lamp
+        to: "off"
       - id: tag_busy
         platform: tag
         tag_id: c7089580-2648-4265-97b1-ab03a53b8fd9
@@ -73,6 +78,22 @@ automation:
                 id:
                   - tag_free
             sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Free
+          - conditions:
+              - condition: trigger
+                id:
+                  - light_off
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.kevin_status_lights
               - service: input_select.select_option
                 target:
                   entity_id: input_select.kevin_status
@@ -86,6 +107,11 @@ automation:
       - platform: state
         entity_id:
           - input_select.kevin_status
+      - id: light_on
+        platform: state
+        entity_id:
+          - light.d20_lamp
+        to: "on"
     action:
       - choose:
           - conditions:
@@ -125,6 +151,14 @@ automation:
               - condition: state
                 entity_id: input_select.kevin_status
                 state: Free
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: light.d20_lamp
+                    state: "on"
+                  - condition: trigger
+                    id:
+                      - light_on
             sequence:
               - service: light.turn_on
                 target:
