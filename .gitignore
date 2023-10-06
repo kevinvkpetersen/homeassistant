@@ -53,3 +53,4 @@ TEST*.xml
 .storage/
 .HA_VERSION
 secrets.yaml
+SERVICE_ACCOUNT.JSON
