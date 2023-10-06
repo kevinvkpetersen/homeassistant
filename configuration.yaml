@@ -4,6 +4,7 @@ homeassistant:
   longitude: !secret home_longitude
   time_zone: "America/Vancouver"
   unit_system: metric
+  external_url: !secret home_external_url
 
 # Loads default set of integrations. Do not remove.
 default_config:
