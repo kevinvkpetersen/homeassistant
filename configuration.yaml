@@ -6,6 +6,9 @@ homeassistant:
   unit_system: metric
   external_url: !secret home_external_url
 
+  # Load configs in logical groups
+  packages: !include_dir_named packages
+
 # Loads default set of integrations. Do not remove.
 default_config:
 
