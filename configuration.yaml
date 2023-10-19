@@ -44,6 +44,14 @@ alexa:
       include_domains:
         - light
 
+alexa_media:
+  accounts:
+    - email: !secret amazon_email
+      password: !secret amazon_password
+      url: amazon.ca
+      exclude_devices:
+        - "This Device"
+
 # Google Assistant
 google_assistant:
   project_id: !secret google_project_id
