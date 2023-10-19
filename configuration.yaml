@@ -33,6 +33,17 @@ http:
 tts:
   - platform: google_translate
 
+# Alexa
+alexa:
+  smart_home:
+    locale: en-CA
+    endpoint: https://api.amazonalexa.com/v3/events
+    client_id: !secret alexa_client_id
+    client_secret: !secret alexa_client_secret
+    filter:
+      include_domains:
+        - light
+
 # Google Assistant
 google_assistant:
   project_id: !secret google_project_id
