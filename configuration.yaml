@@ -23,9 +23,20 @@ scene: !include scenes.yaml
 ####################  Services  ####################
 # HTTP/SSL
 http:
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
+  # ssl_certificate: /ssl/fullchain.pem
+  # ssl_key: /ssl/privkey.pem
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
 
 # Text to speech
 tts:
   - platform: google_translate
+
+# Google Assistant
+google_assistant:
+  project_id: !secret google_project_id
+  service_account: !include SERVICE_ACCOUNT.JSON
+  report_state: true
+  exposed_domains:
+    - light
