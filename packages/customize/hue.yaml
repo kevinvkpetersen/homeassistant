@@ -1,0 +1,6 @@
+homeassistant:
+  customize:
+    light.d20_lamp:
+      icon: mdi:dice-d20
+    light.adjustable_lamp:
+      icon: mdi:desk-lamp
