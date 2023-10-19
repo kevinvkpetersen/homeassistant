@@ -52,6 +52,7 @@ TEST*.xml
 # Home Assistant
 .cloud/
 .storage/
+custom_components/
 .HA_VERSION
 secrets.yaml
 SERVICE_ACCOUNT.JSON
