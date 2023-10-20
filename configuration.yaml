@@ -43,6 +43,9 @@ alexa:
     filter:
       include_domains:
         - light
+      exclude_entities:
+        - light.katie_desk_light
+        - light.kevin_status_lights
 
 alexa_media:
   accounts:
@@ -59,3 +62,8 @@ google_assistant:
   report_state: true
   exposed_domains:
     - light
+  entity_config:
+    light.katie_desk_light:
+      expose: false
+    light.kevin_status_lights:
+      expose: false

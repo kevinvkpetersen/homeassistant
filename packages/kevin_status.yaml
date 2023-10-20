@@ -1,0 +1,286 @@
+# Update devices around the house to indicate Kevin's work status
+##############################################################
+
+input_select:
+  kevin_status:
+    name: Kevin's Work Status
+    icon: mdi:traffic-light-outline
+    options:
+      - Free
+      - Busy
+      - Critical
+      - Out
+      - Relax
+
+light:
+  - platform: group
+    name: Kevin Status Lights
+    entities:
+      - light.d20_lamp
+  - platform: group
+    name: Katie Desk Light
+    entities:
+      - light.adjustable_lamp
+
+##############################################################
+
+automation:
+  - id: kevin_status_update
+    alias: Kevin Status - Update Status
+    mode: single
+    trigger:
+      - id: cube_busy
+        platform: state
+        entity_id:
+          - event.status_cube_1
+      - id: cube_out
+        platform: state
+        entity_id:
+          - event.status_cube_2
+      - id: cube_critical
+        platform: state
+        entity_id:
+          - event.status_cube_3
+      - id: cube_free
+        platform: state
+        entity_id:
+          - event.status_cube_4
+      - id: cube_relax
+        platform: state
+        entity_id:
+          - event.status_cube_5
+      - id: cube_off
+        platform: state
+        entity_id:
+          - event.status_cube_6
+
+      - id: light_off
+        platform: state
+        entity_id:
+          - light.d20_lamp
+        to: "off"
+
+      - id: tag_busy
+        platform: tag
+        tag_id: c7089580-2648-4265-97b1-ab03a53b8fd9
+      - id: tag_critical
+        platform: tag
+        tag_id: 125c9116-6961-4f57-9671-1990fbe47d9d
+      - id: tag_out
+        platform: tag
+        tag_id: 5d4997bd-d778-482e-9a91-b46b297cde17
+      - id: tag_free
+        platform: tag
+        tag_id: f45c3159-146d-4b83-b613-772197585b9f
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_busy
+                  - tag_busy
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Busy
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_critical
+                  - tag_critical
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Critical
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_out
+                  - tag_out
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Out
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_relax
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Relax
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_free
+                  - tag_free
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Free
+          - conditions:
+              - condition: trigger
+                id:
+                  - cube_off
+                  - light_off
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.kevin_status_lights
+              - wait_for_trigger:
+                  - platform: state
+                    entity_id: light.kevin_status_lights
+                    to: "off"
+                timeout:
+                  seconds: 1
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.kevin_status
+                data:
+                  option: Free
+  ############################################################
+  - id: kevin_status_update_lights
+    alias: Kevin Status - Update Lights
+    mode: single
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.kevin_status
+      - id: light_on
+        platform: state
+        entity_id:
+          - light.d20_lamp
+        to: "on"
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Busy
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [0, 0, 255]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Critical
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [255, 0, 0]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Out
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [0, 255, 0]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Relax
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [255, 123, 29]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Free
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: light.d20_lamp
+                    state: "on"
+                  - condition: trigger
+                    id:
+                      - light_on
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.kevin_status_lights
+                data:
+                  brightness: 255
+                  rgb_color: [255, 255, 255]
+  ############################################################
+  - id: kevin_status_update_katie_light
+    alias: Kevin Status - Update Katie's Light
+    mode: single
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.kevin_status
+      - platform: state
+        entity_id: light.katie_desk_light
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: light.katie_desk_light
+        state: "on"
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Busy
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.katie_desk_light
+                data:
+                  brightness: 255
+                  rgb_color: [0, 0, 255]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Critical
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.katie_desk_light
+                data:
+                  brightness: 255
+                  rgb_color: [255, 0, 0]
+          - conditions:
+              - condition: state
+                entity_id: input_select.kevin_status
+                state: Out
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.katie_desk_light
+                data:
+                  brightness: 255
+                  rgb_color: [0, 255, 0]
+        default:
+          - service: scene.turn_on
+            target:
+              entity_id: scene.katie_office_bright
+  ############################################################
