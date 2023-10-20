@@ -1,0 +1,4 @@
+homeassistant:
+  customize:
+    climate.fireplace:
+      icon: mdi:fire
