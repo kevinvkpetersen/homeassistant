@@ -1,0 +1,20 @@
+# Sync exposed devices to the voice assistants
+##############################################################
+
+automation:
+  - id: sync_devices
+    alias: Sync Devices to Assistants
+    mode: single
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: google_assistant.request_sync
+        data:
+          agent_user_id: !secret google_agent_user_id
+      - service: media_player.play_media
+        target:
+          entity_id: media_player.living_room_echo
+        data:
+          media_content_type: custom
+          media_content_id: Discover devices
