@@ -43,6 +43,7 @@ alexa:
     filter:
       include_domains:
         - light
+        - lock
       exclude_entities:
         - light.katie_desk_light
         - light.kevin_status_lights
@@ -60,8 +61,10 @@ google_assistant:
   project_id: !secret google_project_id
   service_account: !include SERVICE_ACCOUNT.JSON
   report_state: true
+  secure_devices_pin: !secret google_secure_devices_pin
   exposed_domains:
     - light
+    - lock
   entity_config:
     light.katie_desk_light:
       expose: false
