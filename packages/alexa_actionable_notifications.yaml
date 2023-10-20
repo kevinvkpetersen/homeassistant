@@ -1,0 +1,57 @@
+# Have Alexa prompt for user input
+##############################################################
+
+input_text:
+  alexa_actionable_notification:
+    name: Alexa Actionable Notification Holder
+    max: 255
+    initial: '{"text": "This is a test of the alexa actionable notifications skill. Did it work?", "event": "actionable.skill.test", "suppress_confirmation": "false"}'
+
+##############################################################
+script:
+  activate_alexa_actionable_notification:
+    alias: Activate Alexa Actionable Notification
+    description: Activates an actionable notification on a specific Echo device
+    mode: single
+    fields:
+      text:
+        name: Text
+        description: The text you would like Alexa to speak.
+        example: "Should I turn on the fireplace?"
+        required: true
+        selector:
+          text:
+      event_id:
+        name: Event ID
+        description: Correlation ID for event responses
+        example: "alexa_actionable_fireplace"
+        default: alexa_actionable_default
+        selector:
+          text:
+      alexa_device:
+        name: Echo Device
+        description: Alexa device you want to trigger
+        example: "media_player.living_room_echo"
+        required: true
+        selector:
+          entity:
+            filter:
+              - integration: alexa_media
+                domain: media_player
+      confirm_response:
+        name: Alexa Confirmation
+        description: Set to true if you want Alexa to confirm with 'okay'
+        example: "true"
+        default: true
+        selector:
+          boolean:
+    sequence:
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.alexa_actionable_notification
+          value: '{"text": "{{ text }}", "event": "{{ event_id }}", "suppress_confirmation": "{{ not confirm_response }}"}'
+      - service: media_player.play_media
+        data_template:
+          entity_id: "{{ alexa_device }}"
+          media_content_type: skill
+          media_content_id: !secret alexa_actionable_notification_skill
