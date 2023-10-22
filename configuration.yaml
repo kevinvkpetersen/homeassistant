@@ -45,6 +45,8 @@ alexa:
         - light
         - lock
         - vacuum
+      include_entities:
+        - cover.garage_door
       exclude_entities:
         - light.katie_desk_light
         - light.kevin_status_lights
