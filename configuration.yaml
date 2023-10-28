@@ -62,11 +62,4 @@ google_assistant:
   service_account: !include SERVICE_ACCOUNT.JSON
   report_state: true
   secure_devices_pin: !secret google_secure_devices_pin
-  exposed_domains:
-    - light
-    - lock
-  entity_config:
-    light.katie_desk_light:
-      expose: false
-    light.kevin_status_lights:
-      expose: false
+  expose_by_default: false
