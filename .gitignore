@@ -53,6 +53,7 @@ TEST*.xml
 .cloud/
 .storage/
 custom_components/
+*.pem
 .HA_VERSION
 secrets.yaml
 SERVICE_ACCOUNT.JSON
