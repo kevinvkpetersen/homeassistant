@@ -3,7 +3,7 @@
 
 automation:
   - id: fireplace_unattended
-    alias: Fireplace Unattended
+    alias: π - RULE - Fireplace Unattended
     description: "Turns off the fireplace is there is no one on the main level for a while"
     mode: single
     trigger:
@@ -20,3 +20,4 @@ automation:
           entity_id: climate.fireplace
         data:
           hvac_mode: "off"
+  ############################################################

@@ -3,7 +3,7 @@
 
 automation:
   - id: sync_devices
-    alias: Sync Devices to Assistants
+    alias: Σ - SYSTEM - Sync Devices to Assistants
     mode: single
     trigger:
       - platform: homeassistant
@@ -18,3 +18,4 @@ automation:
         data:
           media_content_type: custom
           media_content_id: Discover devices
+  ############################################################

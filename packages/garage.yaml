@@ -3,7 +3,7 @@
 
 automation:
   - id: garage_door_tag
-    alias: Garage Door Tag
+    alias: TAG - Garage Door
     mode: single
     trigger:
       - platform: tag
@@ -34,7 +34,7 @@ automation:
           seconds: 2
   ############################################################
   - id: garage_door_lock
-    alias: Auto-lock Garage Door
+    alias: π - RULE - Auto-lock Garage Door
     mode: single
     trigger:
       - platform: state
