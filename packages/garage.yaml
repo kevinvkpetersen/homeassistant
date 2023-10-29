@@ -1,0 +1,35 @@
+# Control the garage doors
+##############################################################
+
+automation:
+  - id: garage_door_tag
+    alias: Garage Door Tag
+    mode: single
+    trigger:
+      - platform: tag
+        tag_id: 69d8d98d-700e-4e8c-ac10-85a2165badaf
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: cover.garage_door
+                state: "closed"
+              - condition: state
+                entity_id: binary_sensor.inner_garage_door
+                state: "off"
+            sequence:
+              - service: cover.open_cover
+                target:
+                  entity_id: cover.garage_door
+          - conditions:
+              - not:
+                  - condition: state
+                    entity_id: cover.garage_door
+                    state: "closed"
+            sequence:
+              - service: cover.close_cover
+                target:
+                  entity_id: cover.garage_door
+      - delay:
+          seconds: 2
+  ############################################################
