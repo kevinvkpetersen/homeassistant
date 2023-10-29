@@ -1,0 +1,35 @@
+homeassistant:
+  customize:
+    binary_sensor.fridge_door:
+      device_class: door
+    sensor.fridge_setpoint:
+      device_class: temperature
+      unit_of_measurement: °C
+    sensor.fridge_temperature:
+      device_class: temperature
+      unit_of_measurement: °C
+
+    sensor.oven_completion_time:
+      icon: mdi:stove
+    sensor.oven_machine_state:
+      icon: mdi:stove
+    sensor.oven_mode:
+      icon: mdi:stove
+    sensor.oven_status:
+      icon: mdi:stove
+    sensor.oven_setpoint:
+      device_class: temperature
+      unit_of_measurement: °F
+
+template:
+  - binary_sensor:
+      - name: Oven Active
+        unique_id: oven_active
+        state: >
+          {{ is_state("sensor.oven_machine_state", "running") }}
+        icon: >
+          {% if is_state("binary_sensor.oven_active", "on") %}
+            mdi:fire
+          {% else %}
+            mdi:stove
+          {% endif %}
