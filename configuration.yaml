@@ -46,6 +46,8 @@ alexa:
         - light
         - lock
         - vacuum
+      include_entities:
+        - cover.garage_door
       exclude_entities:
         - climate.fireplace
         - light.katie_desk_light
