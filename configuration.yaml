@@ -2,6 +2,7 @@ homeassistant:
   name: !secret home_name
   latitude: !secret home_latitude
   longitude: !secret home_longitude
+  radius: 30
   time_zone: "America/Vancouver"
   unit_system: metric
   external_url: !secret home_external_url
