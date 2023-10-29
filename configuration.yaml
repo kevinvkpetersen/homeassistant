@@ -44,6 +44,7 @@ alexa:
       include_domains:
         - light
         - lock
+        - vacuum
       exclude_entities:
         - light.katie_desk_light
         - light.kevin_status_lights
