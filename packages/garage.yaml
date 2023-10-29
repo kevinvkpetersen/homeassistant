@@ -33,3 +33,19 @@ automation:
       - delay:
           seconds: 2
   ############################################################
+  - id: garage_door_lock
+    alias: Auto-lock Garage Door
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: cover.garage_door
+        from: "closed"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.inner_garage_door
+        state: "off"
+    action:
+      - service: lock.lock
+        target:
+          entity_id: lock.garage_door
+  ############################################################
