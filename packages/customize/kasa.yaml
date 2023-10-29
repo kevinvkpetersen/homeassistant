@@ -1,0 +1,4 @@
+homeassistant:
+  customize:
+    switch.mattress_pad:
+      icon: mdi:radiator
