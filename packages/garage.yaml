@@ -49,3 +49,41 @@ automation:
         target:
           entity_id: lock.garage_door
   ############################################################
+  - id: garage_door_driving
+    alias: Open Garage Door When Driving Home
+    mode: single
+    trigger:
+      - id: katie_home
+        platform: zone
+        entity_id: person.katie
+        zone: zone.home
+        event: enter
+      - id: kevin_home
+        platform: zone
+        entity_id: person.kevin
+        zone: zone.home
+        event: enter
+    condition:
+      - or:
+          - and:
+              - condition: trigger
+                id:
+                  - katie_home
+              - condition: state
+                entity_id: binary_sensor.seafoam_android_auto
+                state: "on"
+          - and:
+              - condition: trigger
+                id:
+                  - kevin_home
+              - condition: state
+                entity_id: binary_sensor.kevin_phone_android_auto
+                state: "on"
+      - condition: state
+        entity_id: binary_sensor.inner_garage_door
+        state: "off"
+    action:
+      - service: cover.open_cover
+        target:
+          entity_id: cover.garage_door
+  ############################################################
