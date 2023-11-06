@@ -21,3 +21,65 @@ automation:
         data:
           hvac_mode: "off"
   ############################################################
+  - id: heat_pump_mutex
+    alias: π - RULE - Heat Pump Mutex
+    trigger:
+      - id: bedroom_cool
+        platform: state
+        entity_id: climate.bedroom_thermostat
+        to: "cool"
+      - id: bedroom_heat
+        platform: state
+        entity_id: climate.bedroom_thermostat
+        to: "heat"
+      - id: living_room_cool
+        platform: state
+        entity_id: climate.living_room_thermostat
+        to: "cool"
+      - id: living_room_heat
+        platform: state
+        entity_id: climate.living_room_thermostat
+        to: "heat"
+    action:
+      - choose:
+          - conditions:
+              - or:
+                  - and:
+                      - condition: trigger
+                        id:
+                          - bedroom_cool
+                      - condition: state
+                        entity_id: climate.living_room_thermostat
+                        state: "heat"
+                  - and:
+                      - condition: trigger
+                        id:
+                          - bedroom_heat
+                      - condition: state
+                        entity_id: climate.living_room_thermostat
+                        state: "cool"
+            sequence:
+              - service: climate.turn_off
+                target:
+                  entity_id: climate.living_room_thermostat
+          - conditions:
+              - or:
+                  - and:
+                      - condition: trigger
+                        id:
+                          - living_room_cool
+                      - condition: state
+                        entity_id: climate.bedroom_thermostat
+                        state: "heat"
+                  - and:
+                      - condition: trigger
+                        id:
+                          - living_room_heat
+                      - condition: state
+                        entity_id: climate.bedroom_thermostat
+                        state: "cool"
+            sequence:
+              - service: climate.turn_off
+                target:
+                  entity_id: climate.bedroom_thermostat
+  ############################################################
