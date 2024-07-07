@@ -32,27 +32,27 @@ automation:
       - id: cube_busy
         platform: state
         entity_id:
-          - event.status_cube_1
+          - event.kevin_status_cube_1
       - id: cube_out
         platform: state
         entity_id:
-          - event.status_cube_2
+          - event.kevin_status_cube_2
       - id: cube_critical
         platform: state
         entity_id:
-          - event.status_cube_3
+          - event.kevin_status_cube_3
       - id: cube_free
         platform: state
         entity_id:
-          - event.status_cube_4
+          - event.kevin_status_cube_4
       - id: cube_relax
         platform: state
         entity_id:
-          - event.status_cube_5
+          - event.kevin_status_cube_5
       - id: cube_off
         platform: state
         entity_id:
-          - event.status_cube_6
+          - event.kevin_status_cube_6
 
       - id: light_off
         platform: state
