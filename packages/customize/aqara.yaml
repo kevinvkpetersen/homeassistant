@@ -1,20 +1,40 @@
 homeassistant:
   customize:
-    event.status_cube_1:
-      friendly_name: Status Cube Side 1
+    ## Katie Status Cube ##
+    event.katie_status_cube_1:
+      friendly_name: Katie Status Cube Side 1
       icon: mdi:dice-1
-    event.status_cube_2:
-      friendly_name: Status Cube Side 2
+    event.katie_status_cube_2:
+      friendly_name: Katie Status Cube Side 2
       icon: mdi:dice-2
-    event.status_cube_3:
-      friendly_name: Status Cube Side 3
+    event.katie_status_cube_3:
+      friendly_name: Katie Status Cube Side 3
       icon: mdi:dice-3
-    event.status_cube_4:
-      friendly_name: Status Cube Side 4
+    event.katie_status_cube_4:
+      friendly_name: Katie Status Cube Side 4
       icon: mdi:dice-4
-    event.status_cube_5:
-      friendly_name: Status Cube Side 5
+    event.katie_status_cube_5:
+      friendly_name: Katie Status Cube Side 5
       icon: mdi:dice-5
-    event.status_cube_6:
-      friendly_name: Status Cube Side 6
+    event.katie_status_cube_6:
+      friendly_name: Katie Status Cube Side 6
+      icon: mdi:dice-6
+    ## Kevin Status Cube ##
+    event.kevin_status_cube_1:
+      friendly_name: Kevin Status Cube Side 1
+      icon: mdi:dice-1
+    event.kevin_status_cube_2:
+      friendly_name: Kevin Status Cube Side 2
+      icon: mdi:dice-2
+    event.kevin_status_cube_3:
+      friendly_name: Kevin Status Cube Side 3
+      icon: mdi:dice-3
+    event.kevin_status_cube_4:
+      friendly_name: Kevin Status Cube Side 4
+      icon: mdi:dice-4
+    event.kevin_status_cube_5:
+      friendly_name: Kevin Status Cube Side 5
+      icon: mdi:dice-5
+    event.kevin_status_cube_6:
+      friendly_name: Kevin Status Cube Side 6
       icon: mdi:dice-6
