@@ -31,33 +31,26 @@ automation:
     trigger:
       - id: cube_busy
         platform: state
-        entity_id:
-          - event.kevin_status_cube_1
+        entity_id: event.kevin_status_cube_1
       - id: cube_out
         platform: state
-        entity_id:
-          - event.kevin_status_cube_2
+        entity_id: event.kevin_status_cube_2
       - id: cube_critical
         platform: state
-        entity_id:
-          - event.kevin_status_cube_3
+        entity_id: event.kevin_status_cube_3
       - id: cube_free
         platform: state
-        entity_id:
-          - event.kevin_status_cube_4
+        entity_id: event.kevin_status_cube_4
       - id: cube_relax
         platform: state
-        entity_id:
-          - event.kevin_status_cube_5
+        entity_id: event.kevin_status_cube_5
       - id: cube_off
         platform: state
-        entity_id:
-          - event.kevin_status_cube_6
+        entity_id: event.kevin_status_cube_6
 
       - id: light_off
         platform: state
-        entity_id:
-          - light.d20_lamp
+        entity_id: light.d20_lamp
         to: "off"
 
       - id: tag_busy
@@ -157,12 +150,10 @@ automation:
     mode: single
     trigger:
       - platform: state
-        entity_id:
-          - input_select.kevin_status
+        entity_id: input_select.kevin_status
       - id: light_on
         platform: state
-        entity_id:
-          - light.d20_lamp
+        entity_id: light.d20_lamp
         to: "on"
     action:
       - choose:
@@ -214,8 +205,7 @@ automation:
               - condition: state
                 entity_id: input_select.kevin_status
                 state: Free
-              - condition: or
-                conditions:
+              - or:
                   - condition: state
                     entity_id: light.d20_lamp
                     state: "on"
@@ -235,8 +225,7 @@ automation:
     mode: single
     trigger:
       - platform: state
-        entity_id:
-          - input_select.kevin_status
+        entity_id: input_select.kevin_status
       - platform: state
         entity_id: light.katie_desk_light
         to: "on"
