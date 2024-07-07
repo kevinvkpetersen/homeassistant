@@ -1,0 +1,9 @@
+get_room_device:
+  alias: Get Room Device
+  sequence:
+  - variables:
+      response:
+        response: Normal
+  - stop: Return
+    response_variable: response
+  mode: parallel

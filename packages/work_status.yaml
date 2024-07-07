@@ -5,6 +5,7 @@ input_select:
   kevin_status:
     name: Kevin's Work Status
     icon: mdi:traffic-light-outline
+    initial: Free
     options:
       - Free
       - Busy
@@ -21,10 +22,12 @@ light:
     name: Kevin Status Lights
     entities:
       - light.d20_lamp
+      - light.adjustable_lamp
   - platform: group
     name: Katie Desk Light
     entities:
-      - light.adjustable_lamp
+      - light.hue_color_candle_1
+      - light.hue_color_candle_1_2
 
 ##############################################################
 
