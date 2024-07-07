@@ -1,0 +1,6 @@
+homeassistant:
+  customize:
+    light.nightlight:
+      icon: mdi:lightbulb-night
+    select.nightlight_device_mode:
+      icon: mdi:motion-sensor
