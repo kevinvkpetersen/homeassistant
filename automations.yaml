@@ -99,3 +99,25 @@
         target:
           entity_id: switch.tp_link_smart_plug_46a3_yard_lights
   mode: single
+- id: '1725573985458'
+  alias: Doorbell light flash
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - event.front_door_chime
+  condition: []
+  action:
+  - repeat:
+      count: 3
+      sequence:
+      - device_id: 07f29ac5c75cce573c0a49fd078cad06
+        domain: light
+        entity_id: f874c555d6722f9128efc0d5a0b02d97
+        type: flash
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+  mode: single

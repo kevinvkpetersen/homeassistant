@@ -1,10 +1,5 @@
 homeassistant:
   customize:
-    binary_sensor.dryer_vibration:
-      friendly_name: Dryer Vibration Sensor
-      device_class: vibration
-    binary_sensor.inner_garage_door:
-      friendly_name: Inner Garage Door Sensor
     ## Katie Status Cube ##
     event.katie_status_cube_1:
       friendly_name: Katie Status Cube Side 1
