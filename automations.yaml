@@ -62,42 +62,42 @@
 - id: '1712973614098'
   alias: Test switch for yard
   description: ''
-  trigger:
-  - platform: device
-    type: turned_on
+  triggers:
+  - type: turned_on
     device_id: 8681549325fdea02e6ae53f143706e38
     entity_id: 3f807357d04058d7321f3f1f4c82de74
     domain: switch
     id: upper-on
-  - platform: device
-    type: turned_off
+    trigger: device
+  - type: turned_off
     device_id: 8681549325fdea02e6ae53f143706e38
     entity_id: 3f807357d04058d7321f3f1f4c82de74
     domain: switch
     id: upper-off
-  condition: []
-  action:
+    trigger: device
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - upper-on
       sequence:
-      - service: switch.turn_on
-        metadata: {}
+      - metadata: {}
         data: {}
+        action: switch.turn_on
         target:
-          entity_id: switch.tp_link_smart_plug_46a3_yard_lights
+          entity_id: switch.yard_plugs_yard_lights
     - conditions:
       - condition: trigger
         id:
         - upper-off
       sequence:
-      - service: switch.turn_off
-        metadata: {}
+      - metadata: {}
         data: {}
+        action: switch.turn_off
         target:
-          entity_id: switch.tp_link_smart_plug_46a3_yard_lights
+          entity_id: switch.yard_plugs_yard_lights
   mode: single
 - id: '1725573985458'
   alias: Doorbell light flash
@@ -120,4 +120,44 @@
           minutes: 0
           seconds: 1
           milliseconds: 0
+  mode: single
+- id: '1732942429267'
+  alias: Tower Group Control
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 5513781073db08c770d9a82e4510555b
+    entity_id: 5ac8048d1f1934a81ff28820c5c38bbf
+    domain: light
+    trigger: device
+    id: tower_on
+  - type: turned_off
+    device_id: 5513781073db08c770d9a82e4510555b
+    entity_id: 5ac8048d1f1934a81ff28820c5c38bbf
+    domain: light
+    trigger: device
+    id: tower_off
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - tower_on
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          area_id: tower
+    - conditions:
+      - condition: trigger
+        id:
+        - tower_off
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          area_id: tower
   mode: single
