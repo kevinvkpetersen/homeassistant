@@ -161,3 +161,88 @@
         target:
           area_id: tower
   mode: single
+- id: '1737362705147'
+  alias: Printer Status Bar
+  description: ''
+  triggers:
+  - trigger: state
+    id: percent_update
+    entity_id:
+    - sensor.print_job_completion
+    not_from:
+    - unknown
+    - unavailable
+    not_to:
+    - unknown
+    - unavailable
+    - '100'
+  - trigger: state
+    id: print_complete
+    entity_id:
+    - sensor.saturn_4_ultra_print_status
+    to: complete
+    not_from:
+    - unknown
+    - unavailable
+  - trigger: state
+    id: print_error
+    entity_id:
+    - sensor.saturn_4_ultra_print_status
+    to:
+    - unknown
+    - unavailable
+    not_from:
+    - complete
+    - idle
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - percent_update
+      sequence:
+      - action: notify.mobile_app_kevin_pixel_8
+        metadata: {}
+        data:
+          message: '{{states(''sensor.print_job_completion'')}}%'
+          title: Saturn 4 Ultra
+          data:
+            tag: saturn_4_ultra_current_layer
+            channel: Printer Status Bar
+            importance: min
+    - conditions:
+      - condition: trigger
+        id:
+        - print_error
+      sequence:
+      - action: notify.mobile_app_kevin_pixel_8
+        metadata: {}
+        data:
+          title: Saturn 4 Ultra
+          message: Print Failed!
+          data:
+            tag: saturn_4_ultra_status
+            channel: Print Error
+            importance: default
+    - conditions:
+      - condition: trigger
+        id:
+        - print_complete
+      sequence:
+      - action: notify.mobile_app_kevin_pixel_8
+        metadata: {}
+        data:
+          message: clear_notification
+          data:
+            tag: saturn_4_ultra_current_layer
+      - action: notify.mobile_app_kevin_pixel_8
+        metadata: {}
+        data:
+          title: Saturn 4 Ultra
+          message: Print Complete!
+          data:
+            tag: saturn_4_ultra_status
+            channel: Print Complete
+            importance: default
+  mode: single
