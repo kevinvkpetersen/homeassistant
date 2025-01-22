@@ -53,6 +53,7 @@ TEST*.xml
 .cloud/
 .storage/
 custom_components/
+image/
 *.pem
 .HA_VERSION
 secrets.yaml
