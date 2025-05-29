@@ -16,7 +16,7 @@ light:
   - platform: group
     name: Katie Desk Light
     entities:
-      - light.katie_office_grono
+      - light.tower_grono
   - platform: group
     name: Katie Status Lights
     entities:
