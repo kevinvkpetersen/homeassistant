@@ -368,5 +368,5 @@ automation:
         default:
           - service: scene.turn_on
             target:
-              entity_id: scene.katie_office_bright
+              entity_id: scene.tower_bright
   ############################################################
