@@ -1,0 +1,7 @@
+{% macro heat_pump_mode(climate_entity_id, fan_entity_id) -%}
+  {%- if is_state(climate_entity_id, "off") and is_state(fan_entity_id, "on") -%}
+    fan_only
+  {%- else -%}
+    {{ states(climate_entity_id) }}
+  {%- endif -%}
+{%- endmacro %}

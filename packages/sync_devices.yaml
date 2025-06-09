@@ -5,16 +5,16 @@ automation:
   - id: sync_devices
     alias: Σ - SYSTEM - Sync Devices to Assistants
     mode: single
-    trigger:
-      - platform: homeassistant
+    triggers:
+      - trigger: homeassistant
         event: start
-    action:
-      - service: google_assistant.request_sync
+    actions:
+      - action: google_assistant.request_sync
         data:
           agent_user_id: !secret google_agent_user_id
-      - service: media_player.play_media
+      - action: media_player.play_media
         target:
-          entity_id: media_player.living_room_echo
+          entity_id: media_player.echo_pop
         data:
           media_content_type: custom
           media_content_id: Discover devices
